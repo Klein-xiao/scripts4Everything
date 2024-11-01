@@ -1,0 +1,1 @@
+"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2_PUBLIC\ghidraRun.bat" -project "C:\Users\admin\Downloads\ghidraProjects\my_project_folder" -process "C:\Users\admin\Downloads\MCTI_6530_Group_Assignment-main\submission2\executables\admin@338\virus.exe" -scriptPath "C:\Users\admin\Downloads" -postScript "extract_opcode_ghidra.py"
