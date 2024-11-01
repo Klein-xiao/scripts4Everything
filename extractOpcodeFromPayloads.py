@@ -2,7 +2,7 @@ import zipfile
 import os
 import subprocess
 
-# 定义 ZIP 文件所在的目录
+# 定义 ZIP 文件所在的目录和 IDA 可执行文件路径
 zip_folder = r"C:\path\to\your\zip_folder"  # 将此路径替换为 ZIP 文件所在的文件夹路径
 ida_path = r"C:\Users\admin\Downloads\IDA_Pro_7.7\ida64.exe"  # IDA 可执行文件路径
 ida_script_path = r"C:\Users\admin\Downloads\extract_opcode.py"  # 提取操作码的脚本路径
@@ -42,16 +42,13 @@ if os.path.exists(exe_folder):
     for virus_file in os.listdir(exe_folder):
         virus_path = os.path.join(exe_folder, virus_file)
         
-        # 设置输出的操作码文件路径，文件名与病毒文件名相同
-        opcode_file = os.path.join(opcode_folder, f"{virus_file}.opcode")
-        
         # 调用 IDA 命令行并运行提取脚本
         command = [
             ida_path,
             "-A",  # 自动模式
-            "-S" + ida_script_path + " " + opcode_file,  # 指定脚本并传递输出文件路径
+            f"-S{ida_script_path}",  # 不再传递额外参数，只指定脚本路径
             virus_path  # 目标病毒文件
         ]
 
         subprocess.run(command)
-        print(f"{virus_file} 的操作码已提取并保存至 {opcode_file}")
+        print(f"{virus_file} 的操作码已提取")
