@@ -1,24 +1,24 @@
-import os
 import idautils
 import idaapi
 import idc
+import sys
 
-# 获取从命令行传递的输出文件路径
-output_file = idc.ARGV[1]  # IDA 启动时将文件路径作为参数传递
+# 从命令行获取输出文件路径
+output_file = sys.argv[1]  # 使用从命令行传入的参数
 
 # 打开文件写入操作码
 with open(output_file, "w") as f:
     # 遍历程序中的每条指令
     for address in idautils.Heads():
         if idc.isCode(idc.GetFlags(address)):
-            mnemonic = idc.GetMnem(address)
+            mnemonic = idc.print_insn_mnem(address)
             operands = []
             for i in range(3):  # 假设操作数最多为3个
-                operand = idc.GetOpnd(address, i)
+                operand = idc.print_operand(address, i)
                 if operand:
                     operands.append(operand)
             operands_str = " ".join(operands)
-            f.write(f"{mnemonic} {operands_str}\n")
+            f.write("{} {}\n".format(mnemonic, operands_str))  # 使用 format() 方法替代 f""
 
-print(f"操作码已提取并保存至 {output_file}")
-idaapi.qexit(0)  # 自动退出 IDA
+# 完成提取后退出 IDA
+idaapi.qexit(0)
