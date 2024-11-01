@@ -3,10 +3,10 @@ import os
 import subprocess
 
 # 全局路径配置
-ZIP_FOLDER = r"C:\path\to\your\zip_folder"  # ZIP 文件所在文件夹路径
-GHIDRA_PATH = r"C:\path\to\ghidra_10.1.5_PUBLIC\ghidraRun.bat"  # Ghidra 可执行文件路径
-GHIDRA_PROJECT_PATH = r"C:\path\to\your\ghidra_project"  # Ghidra 项目存储位置
-SCRIPT_PATH = r"C:\path\to\your\scripts\extract_opcode.py"  # 提取操作码的 Ghidra Python 脚本路径
+ZIP_FOLDER = r"C:\Users\admin\Downloads\MCTI_6530_Group_Assignment-main\submission2\executables\admin@338"  # ZIP 文件所在文件夹路径
+GHIDRA_PATH = r"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2_PUBLIC\ghidraRun.bat"  # Ghidra 可执行文件路径
+GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects"  # Ghidra 项目存储位置
+SCRIPT_PATH = r"C:\Users\admin\Downloads\extract_opcode_ghidra.py"  # 提取操作码的 Ghidra Python 脚本路径
 
 def extract_zip(zip_path, output_base_folder):
     """解压 ZIP 文件到指定文件夹"""
