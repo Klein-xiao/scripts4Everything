@@ -10,7 +10,7 @@ static main() {
 
     // 获取当前打开的文件路径并设置输出文件路径
     output_file = get_idb_path();
-    output_file = output_file[0:strlen(output_file) - 4] + ".opcode";  // 替换扩展名为 .opcode
+    output_file = Strleft(output_file, strlen(output_file) - 4) + ".opcode";  // 替换扩展名为 .opcode
 
     // 打开文件写入操作码
     auto file = fopen(output_file, "w");
