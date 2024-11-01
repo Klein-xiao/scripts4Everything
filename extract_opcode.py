@@ -1,10 +1,13 @@
 import idautils
 import idaapi
 import idc
-import sys
+import os
 
-# 从命令行获取输出文件路径
-output_file = sys.argv[1]  # 使用从命令行传入的参数
+# 获取当前打开的 IDA 数据库文件路径和名称
+input_filepath = idaapi.get_input_file_path()
+input_filename = idaapi.get_root_filename()
+output_folder = os.path.dirname(input_filepath)
+output_file = os.path.join(output_folder, f"{input_filename}.opcode")
 
 # 打开文件写入操作码
 with open(output_file, "w") as f:
@@ -20,5 +23,5 @@ with open(output_file, "w") as f:
             operands_str = " ".join(operands)
             f.write("{} {}\n".format(mnemonic, operands_str))  # 使用 format() 方法替代 f""
 
-# 完成提取后退出 IDA
-idaapi.qexit(0)
+print(f"操作码已提取并保存至 {output_file}")
+idaapi.qexit(0)  # 自动退出 IDA
