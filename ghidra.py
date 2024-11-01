@@ -8,12 +8,17 @@ GHIDRA_PATH = r"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2
 GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects\my_project_folder"  # Ghidra 项目存储文件夹（应包含 .gpr 文件）
 SCRIPT_PATH = r"C:\Users\admin\Downloads\extract_opcode_ghidra.py"  # 提取操作码的 Ghidra Python 脚本路径
 
+def debug_print(message):
+    """用于调试的打印函数"""
+    print(f"[DEBUG] {message}")
+
 def extract_zip(zip_path, output_base_folder):
     """解压 ZIP 文件到指定文件夹"""
+    debug_print(f"解压文件 {zip_path} 到目录 {output_base_folder}")
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         extracted_folder = os.path.join(output_base_folder, "extracted")
         zip_ref.extractall(extracted_folder)
-        print(f"{zip_path} 已解压到 {extracted_folder}")
+        debug_print(f"{zip_path} 已解压到 {extracted_folder}")
     return extracted_folder
 
 def create_opcode_folder(base_folder):
@@ -21,7 +26,9 @@ def create_opcode_folder(base_folder):
     opcode_folder = os.path.join(base_folder, "opcode")
     if not os.path.exists(opcode_folder):
         os.makedirs(opcode_folder)
-        print(f"创建 opcode 文件夹：{opcode_folder}")
+        debug_print(f"创建 opcode 文件夹：{opcode_folder}")
+    else:
+        debug_print(f"opcode 文件夹已存在：{opcode_folder}")
     return opcode_folder
 
 def run_ghidra(virus_path, opcode_folder):
@@ -34,9 +41,19 @@ def run_ghidra(virus_path, opcode_folder):
         "-postScript", os.path.basename(SCRIPT_PATH),
         opcode_folder  # 将输出目录作为参数传递给脚本
     ]
+    
+    debug_print(f"即将运行 Ghidra 命令：{' '.join(command)}")
+    debug_print(f"病毒文件路径：{virus_path}")
+    debug_print(f"操作码输出目录：{opcode_folder}")
 
-    # 运行 Ghidra 命令
-    subprocess.run(command)
+    try:
+        result = subprocess.run(command, capture_output=True, text=True)
+        debug_print(f"Ghidra 输出:\n{result.stdout}")
+        if result.stderr:
+            debug_print(f"Ghidra 错误信息:\n{result.stderr}")
+    except Exception as e:
+        debug_print(f"运行 Ghidra 时出错：{e}")
+
     print(f"{virus_path} 的操作码已提取")
 
 def main():
@@ -52,7 +69,9 @@ def main():
     
     if not os.path.exists(output_base_folder):
         os.makedirs(output_base_folder)
-        print(f"创建同级输出目录：{output_base_folder}")
+        debug_print(f"创建同级输出目录：{output_base_folder}")
+    else:
+        debug_print(f"输出目录已存在：{output_base_folder}")
 
     # 解压 ZIP 文件并创建提取操作码的目标文件夹
     extracted_folder = extract_zip(zip_path, output_base_folder)
@@ -63,7 +82,10 @@ def main():
     if os.path.exists(exe_folder):
         for virus_file in os.listdir(exe_folder):
             virus_path = os.path.join(exe_folder, virus_file)
+            debug_print(f"处理文件：{virus_file}")
             run_ghidra(virus_path, opcode_folder)
+    else:
+        debug_print(f"文件夹 {exe_folder} 不存在，无法找到病毒文件。")
 
 # 执行主函数
 if __name__ == "__main__":
