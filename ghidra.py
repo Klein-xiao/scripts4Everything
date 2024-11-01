@@ -5,7 +5,7 @@ import subprocess
 # 全局路径配置
 ZIP_FOLDER = r"C:\Users\admin\Downloads\MCTI_6530_Group_Assignment-main\submission2\executables\admin@338"  # ZIP 文件所在文件夹路径
 GHIDRA_PATH = r"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2_PUBLIC\ghidraRun.bat"  # Ghidra 可执行文件路径
-GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects\my_project_folder"  # Ghidra 项目文件夹路径
+GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects"  # Ghidra 项目文件夹路径
 SCRIPT_PATH = r"C:\Users\admin\Downloads\extract_opcode_ghidra.py"  # 提取操作码的 Ghidra Python 脚本路径
 
 def debug_print(message):
@@ -36,7 +36,7 @@ def run_ghidra(virus_path):
     command = [
         GHIDRA_PATH,
         "-project", GHIDRA_PROJECT_PATH,
-        "-import", virus_path,
+        "-process", virus_path,
         "-scriptPath", os.path.dirname(SCRIPT_PATH),
         "-postScript", os.path.basename(SCRIPT_PATH)
     ]
