@@ -20,7 +20,8 @@ static main() {
     }
     
     // 遍历程序中的每条指令
-    for (address = FirstSeg(); address != BADADDR; address = NextHead(address, BADADDR)) {
+    address = FirstSeg();
+    while (address != BADADDR) {
         if (isCode(GetFlags(address))) {
             mnemonic = GetMnem(address);
             operand_str = "";
@@ -29,14 +30,14 @@ static main() {
             for (i = 0; i < 3; i++) {  // 假设操作数最多为3个
                 operand = GetOpnd(address, i);
                 if (operand != "") {
-                    operand_str += operand;
-                    operand_str += " ";
+                    operand_str = operand_str + operand + " ";
                 }
             }
             
             // 写入文件
             fprintf(file, "%s %s\n", mnemonic, operand_str);
         }
+        address = NextHead(address, BADADDR);
     }
 
     // 关闭文件
