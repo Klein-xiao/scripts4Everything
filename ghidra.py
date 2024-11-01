@@ -5,7 +5,7 @@ import subprocess
 # 全局路径配置
 ZIP_FOLDER = r"C:\Users\admin\Downloads\MCTI_6530_Group_Assignment-main\submission2\executables\admin@338"  # ZIP 文件所在文件夹路径
 GHIDRA_PATH = r"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2_PUBLIC\ghidraRun.bat"  # Ghidra 可执行文件路径
-GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects\my_project_folder"  # Ghidra 项目存储文件夹（应包含 .gpr 文件）
+GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects\my_project_folder"  # Ghidra 项目文件夹路径
 SCRIPT_PATH = r"C:\Users\admin\Downloads\extract_opcode_ghidra.py"  # 提取操作码的 Ghidra Python 脚本路径
 
 def debug_print(message):
@@ -31,20 +31,18 @@ def create_opcode_folder(base_folder):
         debug_print(f"opcode 文件夹已存在：{opcode_folder}")
     return opcode_folder
 
-def run_ghidra(virus_path, opcode_folder):
+def run_ghidra(virus_path):
     """调用 Ghidra 命令行运行提取操作码的脚本"""
     command = [
         GHIDRA_PATH,
         "-project", GHIDRA_PROJECT_PATH,
         "-import", virus_path,
         "-scriptPath", os.path.dirname(SCRIPT_PATH),
-        "-postScript", os.path.basename(SCRIPT_PATH),
-        opcode_folder  # 将输出目录作为参数传递给脚本
+        "-postScript", os.path.basename(SCRIPT_PATH)
     ]
     
     debug_print(f"即将运行 Ghidra 命令：{' '.join(command)}")
     debug_print(f"病毒文件路径：{virus_path}")
-    debug_print(f"操作码输出目录：{opcode_folder}")
 
     try:
         result = subprocess.run(command, capture_output=True, text=True)
@@ -83,7 +81,7 @@ def main():
         for virus_file in os.listdir(exe_folder):
             virus_path = os.path.join(exe_folder, virus_file)
             debug_print(f"处理文件：{virus_file}")
-            run_ghidra(virus_path, opcode_folder)
+            run_ghidra(virus_path)
     else:
         debug_print(f"文件夹 {exe_folder} 不存在，无法找到病毒文件。")
 
