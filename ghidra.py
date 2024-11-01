@@ -5,7 +5,7 @@ import subprocess
 # 全局路径配置
 ZIP_FOLDER = r"C:\Users\admin\Downloads\MCTI_6530_Group_Assignment-main\submission2\executables\admin@338"  # ZIP 文件所在文件夹路径
 GHIDRA_PATH = r"C:\Users\admin\Downloads\ghidra_11.2_PUBLIC_20240926\ghidra_11.2_PUBLIC\ghidraRun.bat"  # Ghidra 可执行文件路径
-GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects"  # Ghidra 项目存储位置
+GHIDRA_PROJECT_PATH = r"C:\Users\admin\Downloads\ghidraProjects\my_project_folder"  # Ghidra 项目存储文件夹（应包含 .gpr 文件）
 SCRIPT_PATH = r"C:\Users\admin\Downloads\extract_opcode_ghidra.py"  # 提取操作码的 Ghidra Python 脚本路径
 
 def extract_zip(zip_path, output_base_folder):
@@ -28,13 +28,15 @@ def run_ghidra(virus_path, opcode_folder):
     """调用 Ghidra 命令行运行提取操作码的脚本"""
     command = [
         GHIDRA_PATH,
-        GHIDRA_PROJECT_PATH,
+        "-project", GHIDRA_PROJECT_PATH,
         "-import", virus_path,
         "-scriptPath", os.path.dirname(SCRIPT_PATH),
         "-postScript", os.path.basename(SCRIPT_PATH),
         opcode_folder  # 将输出目录作为参数传递给脚本
     ]
-    subprocess.run(command, shell=True)
+
+    # 运行 Ghidra 命令
+    subprocess.run(command)
     print(f"{virus_path} 的操作码已提取")
 
 def main():
